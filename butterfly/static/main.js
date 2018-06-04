@@ -201,12 +201,15 @@
       this.inputHelper.addEventListener('compositionstart', this.compositionStart.bind(this));
       this.inputHelper.addEventListener('compositionupdate', this.compositionUpdate.bind(this));
       this.inputHelper.addEventListener('compositionend', this.compositionEnd.bind(this));
-      this.inputHelper.addEventListener('keydown', this.keyDown.bind(this));
-      this.inputHelper.addEventListener('keypress', this.keyPress.bind(this));
       addEventListener('keydown', this.keyDown.bind(this));
       addEventListener('keypress', this.keyPress.bind(this));
-      if (!isMobile()) {
-        addEventListener('keyup', (function(_this) {
+      addEventListener('keyup', (function(_this) {
+        return function() {
+          return _this.inputHelper.focus();
+        };
+      })(this));
+      if (isMobile()) {
+        addEventListener('click', (function(_this) {
           return function() {
             return _this.inputHelper.focus();
           };
@@ -1503,14 +1506,29 @@
         ev.stopPropagation();
         setTimeout((function(_this) {
           return function() {
+            var char, e, val;
             if (!(_this.inComposition || _this.inputHelper.value.length > 1)) {
-              return _this.send(_this.inputHelper.value);
+              val = _this.inputHelper.value;
+              _this.inputHelper.value = "";
+              char = val.toUpperCase().charCodeAt(0);
+              if ((65 <= char && char <= 90)) {
+                e = new KeyboardEvent('keydown', {
+                  keyCode: char
+                });
+                if (window.mobileKeydown(e)) {
+                  return;
+                }
+              }
+              return _this.send(val);
             }
           };
         })(this), 0);
         return false;
       }
       if (ev.keyCode > 15 && ev.keyCode < 19) {
+        return true;
+      }
+      if (window.mobileKeydown(ev)) {
         return true;
       }
       if (ev.keyCode === 19) {
