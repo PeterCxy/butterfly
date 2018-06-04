@@ -528,7 +528,9 @@
           if (!_this.mouseEvents) {
             return;
           }
-          return cancel(ev);
+          if (ev.target.nodeName.toLowerCase() !== 'a') {
+            return cancel(ev);
+          }
         };
       })(this));
       addEventListener("mousedown", (function(_this) {

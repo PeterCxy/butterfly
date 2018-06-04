@@ -10,9 +10,9 @@ linkify = (text) ->
   pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim
   emailAddressPattern = /[\w.]+@[a-zA-Z_-]+?(?:\.[a-zA-Z]{2,6})+/gim
   text
-    .replace(urlPattern, '<a href="$&">$&</a>')
-    .replace(pseudoUrlPattern, '$1<a href="http://$2">$2</a>')
-    .replace(emailAddressPattern, '<a href="mailto:$&">$&</a>')
+    .replace(urlPattern, '<a href="$&" target="_blank">$&</a>')
+    .replace(pseudoUrlPattern, '$1<a href="http://$2" target="_blank">$2</a>')
+    .replace(emailAddressPattern, '<a href="mailto:$&" target="_blank">$&</a>')
 
 tags =
   '&': '&amp;'

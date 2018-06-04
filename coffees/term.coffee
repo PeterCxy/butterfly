@@ -418,7 +418,7 @@ class Terminal
 
     addEventListener "contextmenu", (ev) =>
       return unless @mouseEvents
-      cancel ev
+      cancel ev unless ev.target.nodeName.toLowerCase() is 'a'
 
     addEventListener "mousedown", (ev) =>
       return unless @mouseEvents
