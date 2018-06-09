@@ -421,7 +421,7 @@ class Terminal
       cancel ev unless ev.target.nodeName.toLowerCase() is 'a'
 
     addEventListener "mousedown", (ev) =>
-      return unless @mouseEvents
+      return unless @mouseEvents and not window.popupOpen
 
       # send the button
       sendButton ev

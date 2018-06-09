@@ -536,7 +536,7 @@
       addEventListener("mousedown", (function(_this) {
         return function(ev) {
           var sm, up;
-          if (!_this.mouseEvents) {
+          if (!(_this.mouseEvents && !window.popupOpen)) {
             return;
           }
           sendButton(ev);

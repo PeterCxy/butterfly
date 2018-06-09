@@ -323,12 +323,14 @@
 
   Popup = (function() {
     function Popup() {
+      window.popupOpen = false;
       this.el = document.getElementById('popup');
       this.bound_click_maybe_close = this.click_maybe_close.bind(this);
       this.bound_key_maybe_close = this.key_maybe_close.bind(this);
     }
 
     Popup.prototype.open = function(html) {
+      window.popupOpen = true;
       this.el.innerHTML = html;
       this.el.classList.remove('hidden');
       addEventListener('click', this.bound_click_maybe_close);
@@ -336,6 +338,7 @@
     };
 
     Popup.prototype.close = function() {
+      window.popupOpen = false;
       removeEventListener('click', this.bound_click_maybe_close);
       removeEventListener('keydown', this.bound_key_maybe_close);
       this.el.classList.add('hidden');

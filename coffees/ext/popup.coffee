@@ -1,11 +1,13 @@
 
 class Popup
   constructor: ->
+    window.popupOpen = false
     @el = document.getElementById('popup')
     @bound_click_maybe_close = @click_maybe_close.bind(@)
     @bound_key_maybe_close = @key_maybe_close.bind(@)
 
   open: (html) ->
+    window.popupOpen = true
     @el.innerHTML = html
     @el.classList.remove 'hidden'
 
@@ -13,6 +15,7 @@ class Popup
     addEventListener 'keydown', @bound_key_maybe_close
 
   close: ->
+    window.popupOpen = false
     removeEventListener 'click', @bound_click_maybe_close
     removeEventListener 'keydown', @bound_key_maybe_close
 
