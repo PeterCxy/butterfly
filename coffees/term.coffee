@@ -2268,8 +2268,8 @@ class Terminal
     while param--
       # test: echo -e '\e[44m\e[1M\e[0m'
       # blankLine(true) - xterm/linux behavior
-      @screen.splice @scrollBottom + @shift, 0, @blankLine(true)
       @screen.splice @y + @shift, 1
+      @screen.splice @scrollBottom + @shift, 0, @blankLine(true)
       unless @normal or @scrollTop isnt 0 or @scrollBottom isnt @rows - 1
         node = @term.childElementCount - @rows + @y + @shift
         @term.childNodes[node].remove()

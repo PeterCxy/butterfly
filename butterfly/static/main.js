@@ -2393,8 +2393,8 @@
         param = 1;
       }
       while (param--) {
-        this.screen.splice(this.scrollBottom + this.shift, 0, this.blankLine(true));
         this.screen.splice(this.y + this.shift, 1);
+        this.screen.splice(this.scrollBottom + this.shift, 0, this.blankLine(true));
         if (!(this.normal || this.scrollTop !== 0 || this.scrollBottom !== this.rows - 1)) {
           node = this.term.childElementCount - this.rows + this.y + this.shift;
           this.term.childNodes[node].remove();
