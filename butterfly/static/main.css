@@ -2814,6 +2814,8 @@ body {
     transition: text-decoration-color 500ms; }
     body a:hover {
       text-decoration: underline; }
+  body .line span {
+    display: inline-block; }
   body .line.active {
     background-color: transparent; }
   body .line.extended {

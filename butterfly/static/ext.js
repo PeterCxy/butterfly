@@ -1,5 +1,5 @@
 (function() {
-  var Popup, Selection, _set_theme_href, _theme, alt, cancel, clean_ansi, copy, ctrl, escape, histSize, linkify, maybePack, nextLeaf, packSize, popup, previousLeaf, selection, setAlarm, tags, tid, walk,
+  var Popup, Selection, _set_theme_href, _theme, alt, cancel, clean_ansi, copy, ctrl, escape, histSize, linkify, linkifyByRegex, maybePack, nextLeaf, packSize, popup, previousLeaf, selection, setAlarm, tags, tid, walk,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   clean_ansi = function(data) {
@@ -197,11 +197,62 @@
   };
 
   linkify = function(text) {
-    var emailAddressPattern, pseudoUrlPattern, urlPattern;
+    var arr, elm, emailAddressPattern, j, len, m, pseudoUrlPattern, ret, urlPattern;
     urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
     pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
     emailAddressPattern = /[\w.]+@[a-zA-Z_-]+?(?:\.[a-zA-Z]{2,6})+/gim;
-    return text.replace(urlPattern, '<a href="$&" target="_blank">$&</a>').replace(pseudoUrlPattern, '$1<a href="http://$2" target="_blank">$2</a>').replace(emailAddressPattern, '<a href="mailto:$&" target="_blank">$&</a>');
+    arr = [text];
+    arr = linkifyByRegex(arr, "url", urlPattern);
+    arr = linkifyByRegex(arr, "pseudoUrl", pseudoUrlPattern);
+    arr = linkifyByRegex(arr, "email", emailAddressPattern);
+    ret = "";
+    for (j = 0, len = arr.length; j < len; j++) {
+      elm = arr[j];
+      if (elm.linkType == null) {
+        ret += elm;
+      } else {
+        m = elm.match;
+        switch (elm.linkType) {
+          case "url":
+            ret += "<a href=\"" + m[0] + "\" target=\"_blank\">" + m[0] + "</a>";
+            break;
+          case "pseudoUrl":
+            ret += m[1] + "<a href=\"http://" + m[2] + "\" target=\"_blank\">" + m[2] + "</a>";
+            break;
+          case "email":
+            ret += "<a href=\"mailto:" + m[0] + "\" target=\"_blank\">" + m[0] + "</a>";
+            break;
+          default:
+            console.log("This cannot be possible");
+        }
+      }
+    }
+    return ret;
+  };
+
+  linkifyByRegex = function(arr, linkType, regex) {
+    var j, lastIndex, len, m, ret, str;
+    ret = [];
+    for (j = 0, len = arr.length; j < len; j++) {
+      str = arr[j];
+      if (str.linkType != null) {
+        ret.push(str);
+      } else {
+        lastIndex = 0;
+        while ((m = regex.exec(str)) !== null) {
+          ret.push(str.slice(lastIndex, m.index));
+          ret.push({
+            linkType: linkType,
+            match: m
+          });
+          lastIndex = m.index + m[0].length;
+        }
+        if (lastIndex < str.length) {
+          ret.push(str.slice(lastIndex, str.length));
+        }
+      }
+    }
+    return ret;
   };
 
   tags = {
