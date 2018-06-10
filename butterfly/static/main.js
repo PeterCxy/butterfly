@@ -707,7 +707,7 @@
     };
 
     Terminal.prototype.screenToDom = function(force) {
-      var active, div, k, len, line, ref, results, y;
+      var active, div, innerHTML, k, len, line, ref, results, y;
       ref = this.screen;
       results = [];
       for (y = k = 0, len = ref.length; k < len; y = ++k) {
@@ -722,7 +722,17 @@
           if (line.extra) {
             div.classList.add('extended');
           }
-          div.innerHTML = (this.lineToDom(y, line, active)).join('');
+          innerHTML = (this.lineToDom(y, line, active)).join('');
+          if ((line.linkifyCache != null) && line.linkifyCache.input === innerHTML) {
+            div.innerHTML = line.linkifyCache.html;
+          } else {
+            div.innerHTML = innerHTML;
+            window.linkifyLine(div);
+            line.linkifyCache = {
+              input: innerHTML,
+              html: div.innerHTML
+            };
+          }
           if (active) {
             this.active = div;
             this.cursor = div.querySelectorAll('.cursor')[0];

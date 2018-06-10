@@ -558,7 +558,15 @@ class Terminal
         div.classList.add 'line'
         div.classList.add 'active' if active
         div.classList.add 'extended' if line.extra
-        div.innerHTML = (@lineToDom y, line, active).join('')
+        innerHTML = (@lineToDom y, line, active).join('')
+        if line.linkifyCache? and line.linkifyCache.input is innerHTML
+          div.innerHTML = line.linkifyCache.html
+        else
+          div.innerHTML = innerHTML
+          window.linkifyLine div
+          line.linkifyCache =
+            input: innerHTML
+            html: div.innerHTML
         if active
           @active = div
           @cursor = div.querySelectorAll('.cursor')[0]

@@ -56,7 +56,7 @@ tags =
 
 escape = (s) -> s.replace(/[&<>]/g, (tag) -> tags[tag] or tag)
 
-Terminal.on 'change', (line) ->
+window.linkifyLine = (line) ->
   walk line, ->
     if @nodeType is 3
       val = @nodeValue

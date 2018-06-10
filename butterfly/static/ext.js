@@ -267,7 +267,7 @@
     });
   };
 
-  Terminal.on('change', function(line) {
+  window.linkifyLine = function(line) {
     return walk(line, function() {
       var linkified, newNode, val;
       if (this.nodeType === 3) {
@@ -281,7 +281,7 @@
         }
       }
     });
-  });
+  };
 
   ctrl = false;
 
