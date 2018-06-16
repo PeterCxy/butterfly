@@ -75,6 +75,7 @@ class Terminal
     # without being `contentEditable`, which will mess up
     # the layout
     @inputHelper = @document.getElementById('input-helper')
+    @inputHelper.className = ''
 
     # A simple div to take place of the IME input preview
     # which is now hidden due to the textarea

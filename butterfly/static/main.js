@@ -175,6 +175,7 @@
       this.term = this.document.getElementById('term');
       this.forceWidth = this.body.getAttribute('data-force-unicode-width') === 'yes';
       this.inputHelper = this.document.getElementById('input-helper');
+      this.inputHelper.className = '';
       this.inputView = this.document.getElementById('input-view');
       this.body.className = 'terminal focus';
       this.body.style.outline = 'none';
